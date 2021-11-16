@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scoped CSS Variables and JS</title>
+    <style>
+      body {
+        text-align: center;
+        background-color: rgb(35, 75, 68);
+        color: white;
+        font-weight: 100;
+        font-size: 50px;
+      }
+
+      .control {
+        margin-bottom: 50px;
+      }
+
+      input {
+        width: 100px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Update CSS Variables with <span class="hl">JS</span></h1>
+    <div class="control">
+      <label for="spcing">Spacing:</label> 
+      <input type="range" id="spacing" min="10" max="200" value="10" data-sizing="px" />
+      <label for="blur">Blur:</label> 
+      <input type="range" id="blur" min="0" max="25" value="10" data-sizing="px" />
+      <label for="color">Base Color</label> 
+      <input type="color" id="color" value="#ffc600" />
+    </div>
+
+    <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500"/>
+
+    <script>
+      const color = document.querySelector('#color');
+      const hl = document.querySelector('.hl');
+      const img = document.querySelector('img');
+
+      const spacingInput = document.querySelector('input#spacing');
+      const blurInput = document.querySelector('input#blur');
+      const colorInput = document.querySelector('input#color');
+
+      function setSpacing() {
+        const space = spacingInput.value;
+        const sizing = spacingInput.dataset.sizing;
+        img.style.border = `${space}${sizing} solid ${color.value}`;
+      }
+
+      function setBlur() {
+        const blur = blurInput.value;
+        const sizing = blurInput.dataset.sizing;
+        img.style.filter = `blur(${blur}${sizing})`;
+      }
+
+      function setColor() {
+        hl.style.color = color.value;
+        img.style['border-color'] = color.value;
+      }
+
+      setSpacing();
+      setBlur();
+      setColor();
+      spacingInput.addEventListener('input', setSpacing);
+      blurInput.addEventListener('input', setBlur);
+      colorInput.addEventListener('input', setColor);
+    </script>
+  </body>
+</html>

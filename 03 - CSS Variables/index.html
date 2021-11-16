@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scoped CSS Variables and JS</title>
+    <style>
+      :root {
+        --spacing: 10px;
+        --blur: 10px;
+        --color: #ffc600;
+      }
+      body {
+        text-align: center;
+        background-color: rgb(35, 75, 68);
+        color: white;
+        font-weight: 100;
+        font-size: 50px;
+      }
+
+      .control {
+        margin-bottom: 50px;
+      }
+
+      input {
+        width: 100px;
+      }
+
+      .hl {
+        color: var(--color);
+      }
+
+      img {
+        background-color: var(--color);
+        padding: var(--spacing);
+        filter: blur(var(--blur));
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Update CSS Variables with <span class="hl">JS</span></h1>
+    <div class="control">
+      <label for="spcing">Spacing:</label> 
+      <input type="range" id="spacing" min="10" max="200" value="10" data-sizing="px" />
+      <label for="blur">Blur:</label> 
+      <input type="range" id="blur" min="0" max="25" value="10" data-sizing="px" />
+      <label for="color">Base Color</label> 
+      <input type="color" id="color" value="#ffc600" />
+    </div>
+
+    <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500"/>
+
+    <script>
+      const inputs = document.querySelectorAll('input');
+
+      function handleUpdate() {
+        console.log(this.name);
+        const suffix = this.dataset.sizing || '';
+        document.documentElement.style.setProperty(`--${this.id}`, this.value + suffix)
+      }
+
+      inputs.forEach((input) => {
+        input.addEventListener('input', handleUpdate);
+      })
+    </script>
+  </body>
+</html>
