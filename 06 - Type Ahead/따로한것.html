@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const search = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+let cities = [];
+
+fetch(endpoint)
+  .then((res) => res.json())
+  .then((data) => cities.push(...data));
+
+console.log(cities);
+
+function removeLis() {
+  const lis = document.querySelectorAll('li');
+  lis.forEach((li) => {
+    li.remove();
+  });
+}
+
+function showMatches(e) {
+  // 이전 li 요소들 제거
+  // 시간 오래 걸림
+  removeLis();
+ 
+  // input에 맞는 결과 찾기
+  const inputValue = e.target.value;
+  const regex = new RegExp(`${inputValue}`, 'i');
+
+  cities.forEach((city) => {
+    const li = document.createElement('li');
+    
+    // 글자 색 변경
+    const regexHl = new RegExp(`${inputValue}`, 'ig');
+    const cityName = city.city.replace(regexHl, `<span class="hl">${inputValue}</span>`);
+    const stateName = city.state.replace(regexHl, `<span class="hl">${inputValue}</span>`);
+    
+    const liText = `<span>${cityName}, ${stateName}</span>`;
+    li.innerHTML = liText;
+
+    if (city.city.match(regex) !== null) {
+      suggestions.appendChild(li);
+    } else if (city.state.match(regex) !== null) {
+      suggestions.appendChild(li);
+    }
+  });
+
+}
+
+search.addEventListener('input', showMatches);
+
+
+</script>
+</body>
+</html>

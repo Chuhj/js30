@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <form class="search-form">
     <input type="text" class="search" placeholder="City or State">
     <ul class="suggestions">
@@ -16,6 +15,46 @@
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const search = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+let cities = [];
+
+fetch(endpoint)
+  .then((res) => res.json())
+  .then((data) => cities.push(...data));
+
+function showMatches(e) {
+  const input = e.target.value;
+  const regex = new RegExp(`${input}`, 'gi');
+  
+  const matches = findMatches(input).map((place) => {
+    const cityName = place.city.replace(regex, `<span class="hl">${input}</span>`);
+    const stateName = place.state.replace(regex, `<span class="hl">${input}</span>`);
+    return `
+      <li>
+        <span>${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `
+  }).join('');
+
+  suggestions.innerHTML = matches;
+}
+
+function findMatches(input) {
+  const regex = new RegExp(input, 'i');
+  return cities.filter((place) => {
+    return place.city.match(regex) || place.state.match(regex);
+  });
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+search.addEventListener('input', showMatches);
+
 
 </script>
 </body>
