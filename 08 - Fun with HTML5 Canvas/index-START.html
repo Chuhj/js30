@@ -1,19 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector('#draw');
+      const ctx = canvas.getContext('2d');
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      let isMouseDown = false;
+      let direction = false;
+      let x = 0;
+      let y = 0;
+      let hue = 0;
+      let width = 100;
 
-</body>
+      function draw(e) {
+        if (!isMouseDown) return;
+
+        ctx.lineWidth = width;
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(e.pageX, e.pageY);
+        ctx.stroke();
+
+        x = e.pageX;
+        y = e.pageY;
+        hue++;
+
+        if (width >= 100) {
+          direction = false;
+        } else if (width <= 1) {
+          direction = true;
+        }
+
+        if (direction) {
+          width++;
+        } else {
+          width--;
+        }
+      }
+
+      window.addEventListener('mousemove', draw);
+      window.addEventListener('mousedown', (e) => {
+        isMouseDown = true;
+        x = e.pageX;
+        y = e.pageY;
+      });
+      window.addEventListener('mouseup', () => (isMouseDown = false));
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
 </html>
