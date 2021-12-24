@@ -1,46 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Console Tricks!</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console Tricks!</title>
+  </head>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
-  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+    <script>
+      const dogs = [
+        { name: 'Snickers', age: 2 },
+        { name: 'hugo', age: 8 },
+      ];
 
-  <script>
-    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+      function makeGreen() {
+        const p = document.querySelector('p');
+        p.style.color = '#BADA55';
+        p.style.fontSize = '50px';
+      }
 
-    function makeGreen() {
+      // Regular
+      console.log('HI');
+      // Interpolated
+      console.log('hi %s', '😎');
+      // Styled
+      console.log('%chello', 'font-size: 30px; color: darkgrey; background: navy');
+      // warning!
+      console.warn('Warning');
+      // Error :|
+      console.error('Error!');
+      // Info
+      console.info('Info');
+      // Testing
+      console.assert(1 === 2, 'Test Failed!');
+      // clearing
+      console.clear();
+      // Viewing DOM Elements
       const p = document.querySelector('p');
-      p.style.color = '#BADA55';
-      p.style.fontSize = '50px';
-    }
-
-    // Regular
-
-    // Interpolated
-
-    // Styled
-
-    // warning!
-
-    // Error :|
-
-    // Info
-
-    // Testing
-
-    // clearing
-
-    // Viewing DOM Elements
-
-    // Grouping together
-
-    // counting
-
-    // timing
-
-  </script>
-</body>
+      console.dir(p);
+      // Grouping together
+      dogs.forEach((dog) => {
+        console.groupCollapsed(dog.name);
+        console.log(`name: ${dog.name}`);
+        console.log(`age: ${dog.age}`);
+        console.groupEnd();
+      });
+      // counting
+      console.count('abc');
+      console.count('abc');
+      console.count('!!!!!!');
+      console.count('!!!!!!');
+      console.count('abc');
+      console.count('abc');
+      console.count('!!!!!!');
+      console.count('abc');
+      console.count('!!!!!!');
+      console.count('!!!!!!');
+      console.count('abc');
+      // timing
+      console.time('Fetching');
+      fetch('https://api.github.com/users/Chuhj')
+        .then((res) => res.json())
+        .then((data) => {
+          console.timeEnd('Fetching');
+          console.log(data);
+        });
+    </script>
+  </body>
 </html>
